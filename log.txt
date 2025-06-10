@@ -1,0 +1,12 @@
+===============================
+	Work log generated at 6/10/2025, 12:46:57 PM:
+	
+
+Modified Files: ["FETCH_HEAD","lexer.cpython-313.pyc","parser.cpython-313.pyc","interpreter_20250610121223.py","interpreter.py","parser.py","lexer_20250610121223.py","lexer.py","simply.txt","parser_20250610123357.py","interpreter_20250610124108.py"]
+	Created Files: ["parser.cpython-313.pyc.2731528799376","HEAD.lock","interpreter_20250610121223.py","interpreter_20250610122522.py","parser_20250610122604.py","lexer_20250610121223.py","lexer_20250610122621.py","parser_20250610122622.py","parser.cpython-313.pyc.2605875905680","parser_20250610123358.py","simply_20250610123552.txt","simply_20250610123910.txt","simply_20250610123936.txt","simply_20250610123949.txt","simply_20250610123958.txt","interpreter_20250610124109.py","simply_20250610124131.txt","simply_20250610124139.txt","functions_with_params copy","__pycache__","lexer.cpython-313.pyc","parser.cpython-313.pyc","interpreter.py","lexer.py","parser.py","simply.txt","return_node","lexer_20250610122620.py","lexer_20250610124305.py","parser_20250610123357.py","parser_20250610124410.py","parser_20250610124447.py","parser_20250610124504.py","interpreter_20250610124108.py","interpreter_20250610124601.py","interpreter_20250610124613.py","interpreter_20250610124630.py","interpreter_20250610124634.py","interpreter_20250610124640.py","interpreter_20250610124645.py","interpreter_20250610124647.py"]
+	Deleted Files: ["HEAD.lock","parser.cpython-313.pyc.2731528799376","parser.cpython-313.pyc.2605875905680","functions_with_params copy"]
+	===============================
+
+Summary:
+Error generating summary.
+

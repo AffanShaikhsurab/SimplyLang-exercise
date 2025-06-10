@@ -32,7 +32,41 @@ class Bool:
                 self.pos_end,
                 self.context,
             )
+    def visit_ReturnNode(
+        self, node: Pr.ReturnNode, 
+    ):
+        res = InterpreterResult()
+        token = node.token
 
+        if token.type == Lexer.TT_IDENTIFIER:
+            value = self.getVariable(token.value, symbol_table)
+            if value == None:
+                return InterpreterResult().failure(
+                    Lexer.InvalidSyntaxError(
+                        f"'{token.value}' is not defined", node.pos_start, node.pos_end
+                    )
+                )
+            return res.success(value)
+        else:
+            return res.success(token)
+
+    def visit_ReturnExprNode(
+        self, node: Pr.ReturnExprNode, context, symbol_table: List[SymbolTable]
+    ):
+        res = InterpreterResult()
+        token = node.token
+
+        value = res.register(self.visit(token, context, symbol_table))
+        if res.error:
+            return res
+        else:
+            if value == None:
+                return InterpreterResult().failure(
+                    Lexer.InvalidSyntaxError(
+                        f"'{token.value}' is not defined", node.pos_start, node.pos_end
+                    )
+                )
+            return res.success(value)
     def isNotEquall(self, other):
         if isinstance(other, Bool):
             return (

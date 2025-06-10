@@ -32,7 +32,41 @@ class Bool:
                 self.pos_end,
                 self.context,
             )
+    def visit_ReturnNode(
+        self, node: Pr.ReturnNode, 
+    ):
+        res = InterpreterResult()
+        token = node.token
 
+        if token.type == Lexer.TT_IDENTIFIER:
+            value = self.getVariable(token.value)
+            if value == None:
+                return InterpreterResult().failure(
+                    Lexer.InvalidSyntaxError(
+                        f"'{token.value}' is not defined", node.pos_start, node.pos_end
+                    )
+                )
+            return res.success(value)
+        else:
+            return res.success(token)
+
+    def visit_ReturnExprNode(
+        self, node: Pr.ReturnExprNode
+    ):
+        res = InterpreterResult()
+        token = node.token
+
+        value = res.register(self.visit(token))
+        if res.error:
+            return res
+        else:
+            if value == None:
+                return InterpreterResult().failure(
+                    Lexer.InvalidSyntaxError(
+                        f"'{token.value}' is not defined", node.pos_start, node.pos_end
+                    )
+                )
+            return res.success(value)
     def isNotEquall(self, other):
         if isinstance(other, Bool):
             return (
@@ -338,7 +372,19 @@ class Interpreter:
                 if res.error:
                     return res
         return res.success(value)  # type: ignore
-
+    def visit_VariableFunctionNode(
+        self, node: Pr.VariableFunctionNode,
+    ):
+        res = InterpreterResult()
+        var_name = node.variable_name.value
+        if isinstance(node.value_node, Pr.FunctionCallNode):
+            value = res.register(
+                self.visit_FunctionCallNode(node.value_node, )
+            )
+            if res.error:
+                return res
+            self.setVariable(var_name, value,)
+            return res.success(value)
     def visit(
         self,
         node,

@@ -1,0 +1,8 @@
+bob takes var does 
+    show("hello this is a function")   
+    reutrn var .
+.
+
+sum is bob(10) .
+show(sum) .
+

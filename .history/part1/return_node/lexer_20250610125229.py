@@ -37,6 +37,7 @@ KEYWORDS = {
     "times": TT_KEYWORD,
     "does": TT_KEYWORD,
     "repeat": TT_KEYWORD,
+    "return ": TT_KEYWORD,
     "do": TT_KEYWORD,
     "otherwise": TT_KEYWORD,
 }
@@ -280,5 +281,5 @@ def generate(filename):
         text = f.read()
     lexer = Lex(text, filename)
     tokens, error = lexer.create_token()
-    # print(f"Tokens: {tokens}")
+    print(f"Tokens: {tokens}")
     return tokens, error

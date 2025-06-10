@@ -370,6 +370,8 @@ class Interpreter:
     def visit_FunctionCallNode(self, node: Pr.FunctionCallNode):
         res = InterpreterResult()
         function = []
+        function_symbol_table = SymbolTable()
+        function_symbol_table.set("NULL", Number(0))
         for func in self.function_list:
             if func.function_name.value == node.function_name:
                 function = func.body
@@ -385,9 +387,9 @@ class Interpreter:
                     for i in range(len(node.parameters)):
                         value = self.symbol_table.get(node.parameters[i])
                         if value:
-                            self.symbol_table.set(func.variables[i], value)
+                            function_symbol_table.set(func.variables[i], value)
                         else:
-                            self.symbol_table.set(
+                            function_symbol_table.set(
                                 func.variables[i], node.parameters[i]
                             )
         value = None

@@ -1,8 +1,8 @@
-bob takes var does 
+bob takes var , t does 
     show("hello this is a function")
     x is 20
     show(x) 
-    show(var)
+    show(t)
 .
 
-bob(10)
+bob(10 . 40)

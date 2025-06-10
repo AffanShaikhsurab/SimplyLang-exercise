@@ -280,5 +280,5 @@ def generate(filename):
         text = f.read()
     lexer = Lex(text, filename)
     tokens, error = lexer.create_token()
-    # print(f"Tokens: {tokens}")
+    print(f"Tokens: {tokens}")
     return tokens, error
