@@ -8,18 +8,22 @@ class ShowNode:
         self.body = body
         self.pos_start = position_var.start
         self.pos_end = position_var.end
+
+
 class ReturnExprNode:
     def __init__(self, token, pos_token):
         self.token = token
         self.pos_start = pos_token.start
         self.pos_end = pos_token.end
 
+
 class ReturnNode:
     def __init__(self, token):
         self.token = token
         self.pos_start = self.token.start
         self.pos_end = self.token.end
-        
+
+
 class VariableFunctionNode:
     def __init__(self, varible_name, value_node):
         self.variable_name = varible_name
@@ -322,7 +326,7 @@ class Parser:
         if self.current_token is None:
             return res.failure("Expected an expression")
         temp = self.current_token
-        
+
         if (
             self.current_token.type == lexer.TT_KEYWORD
             and self.current_token.value == "return"
@@ -343,7 +347,7 @@ class Parser:
                     )
                 )
             pos_token = self.current_token
-            if self.tokens[self.index + 1].type == lexer.TT_NEWLINE :
+            if self.tokens[self.index + 1].type == lexer.TT_NEWLINE:
                 value = self.current_token
                 res.register_advance()
                 self.advance()
@@ -355,7 +359,7 @@ class Parser:
                 res.register_advance()
                 self.advance()
                 return res.success(ReturnExprNode(value, pos_token))
-            
+
         if not seen and self.current_token.type == lexer.TT_IDENTIFIER:
             # Store the variable name token
             variable_token = self.current_token
@@ -399,69 +403,7 @@ class Parser:
                 res.register_advance()
 
                 return res.success(FunctionCallNode(temp.value, temp, parameters))
-            
-            if not self.current_token.matches(lexer.TT_KEYWORD, "is"):
-                return res.failure(
-                    lexer.InvalidSyntaxError(
-                        "Expected 'is'",
-                        self.current_token.start,
-                        self.current_token.end,
-                    )
-                )
 
-            variable = temp
-
-            res.register_advance()
-            self.advance()
-
-            if self.current_token.type == lexer.TT_IDENTIFIER:
-                function_name = self.current_token
-                if self.tokens[self.index + 1].type == lexer.TT_LP:
-                    self.advance()
-                    parameters = []
-                    if function_name.value not in self.functionNames:
-                        return res.failure(
-                            lexer.InvalidSyntaxError(
-                                f"Function Name {function_name.value} not defined",
-                                function_name.start,
-                                function_name.end,
-                            )
-                        )
-                    self.advance()
-                    while self.current_token.type != lexer.TT_RP:
-                        if self.current_token.type == lexer.TT_NEWLINE:
-                            res.failure(
-                                lexer.InvalidSyntaxError(
-                                    "Expected )", function_name.start, function_name.end
-                                )
-                            )
-                        if self.current_token.type == lexer.TT_IDENTIFIER:
-                            if self.current_token.value not in self.variables:
-                                return res.failure(
-                                    lexer.InvalidSyntaxError(
-                                        f"Variable  Name {self.current_token.value} not defined",
-                                        self.current_token.start,
-                                        self.current_token.end,
-                                    )
-                                )
-
-                        parameters.append(self.current_token.value)
-
-                        self.advance()
-
-                        self.skip_commas(res)
-
-                    self.advance()
-                    res.register_advance()
-                    self.variables.append(variable.value)
-                    return res.success(
-                        VariableFunctionNode(
-                            variable,
-                            FunctionCallNode(
-                                function_name.value, function_name, parameters
-                            ),
-                        )
-                    )
             if self.current_token.value == "takes":
                 self.advance()
                 variables = []

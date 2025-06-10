@@ -1,3 +1,0 @@
-bob does 
-    show("hwllo world")
-.

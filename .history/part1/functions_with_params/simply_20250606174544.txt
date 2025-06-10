@@ -1,4 +1,0 @@
-bob takes a does 
-    show(a)
-.
-bob(10)

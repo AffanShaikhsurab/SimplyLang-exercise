@@ -1,5 +1,0 @@
-x is 2 .
-
-repeat 5 times  
- show (x)
- .

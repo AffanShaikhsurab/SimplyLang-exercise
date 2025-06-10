@@ -1,6 +1,0 @@
-bob takes a does 
-    show("hello this is a function")
-    show()
-    show(a)
-.
-bob(10)
