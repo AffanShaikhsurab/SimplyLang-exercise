@@ -1,0 +1,5 @@
+x is 10 .
+show(x) .
+
+till x < 10 do 
+     show(x) 

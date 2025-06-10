@@ -1,0 +1,7 @@
+x is 2 .
+show(x) .
+
+till x < 10 do 
+     show(x) 
+     x is x + 1
+.

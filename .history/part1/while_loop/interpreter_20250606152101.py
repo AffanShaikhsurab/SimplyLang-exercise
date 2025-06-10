@@ -1,0 +1,534 @@
+import parser as Pr
+import lexer as Lexer
+
+
+class Bool:
+    def __init__(self, value):
+        self.value = value
+        self.set_pos()
+        self.set_context()
+
+    def set_pos(self, pos_start=None, pos_end=None):
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+        return self
+
+    def set_context(self, context=None):
+        self.context = context
+        return self
+
+    def isEquall(self, other):
+        if isinstance(other, Bool):
+            return (
+                Bool(self.value == other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f"Can't compare bool with {type(other).__name__}",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )
+
+    def isNotEquall(self, other):
+        if isinstance(other, Bool):
+            return (
+                Bool(self.value != other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f"Can't compare bool with {type(other).__name__}",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )
+
+    def and_with(self, other):
+        if isinstance(other, Bool):
+            return (
+                Bool(self.value and other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f"Can't perform AND with {type(other).__name__}",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )
+
+    def or_with(self, other):
+        if isinstance(other, Bool):
+            return (
+                Bool(self.value or other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f"Can't perform OR with {type(other).__name__}",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )
+
+
+class InterpreterResult:
+    def __init__(self):
+
+        self.value = None
+        self.error = None
+
+    def register(self, res):
+        if res.error:
+            self.error = res.error
+        return res.value
+
+    def success(self, value):
+        self.value = value
+        return self
+
+    def failure(self, error):
+        self.error = error
+        return self
+
+
+class Number:
+    def __init__(self, value):
+        self.value = value
+        self.set_pos()
+        self.set_context()
+
+    def set_pos(self, pos_start=None, pos_end=None):
+        self.pos_start = pos_start
+        self.pos_end = pos_end
+        return self
+
+    def set_context(self, context=None):
+        self.context = context
+        return self    
+    def add(self, other):
+        if isinstance(other, Number):
+            return (
+                Number(self.value + other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f"Can't add Number with {type(other).__name__}",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )
+
+    def minus(self, other):
+        if isinstance(other, Number):
+            return (
+                Number(self.value - other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f"Can't subtract Number with {type(other).__name__}",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )
+        def isLT(self, other):
+        if isinstance(other, Number):
+            return (
+                Number(self.value < other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f"Can't compare Number with {type(other).__name__}",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )
+
+    def isEquall(self, other):
+        if isinstance(other, Number):
+            return (
+                Number(self.value == other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f" Cant compare Number with {type(other).__name__} ",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )    def isNotEquall(self, other):
+        if isinstance(other, Number):
+            return (
+                Number(self.value != other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+        else:
+            return None, Lexer.IllegalOperationError(
+                f"Can't compare Number with {type(other).__name__}",
+                self.pos_start,
+                self.pos_end,
+                self.context,
+            )
+
+    def isGT(self, other):
+        """
+        This function is used to evaluate if the value of the current Number
+        instance is greater than the value of the other Number instance.
+
+        Parameters
+        ----------
+        other : Number
+            The other Number instance to compare with.
+
+        Returns
+        -------
+        Number, Error
+            A Number instance with the result of the comparison and an Error
+            instance if an error occurred during the comparison.
+
+        """
+        if isinstance(other, Number):
+            # Create a new Number instance with the result of the comparison.
+            # The value of the new Number instance is a boolean indicating if
+            # the value of the current Number instance is greater than the value
+            # of the other Number instance.
+            comparison_result = Number(self.value > other.value)
+
+            # Set the context of the new Number instance to the same context as
+            # the current Number instance.
+            comparison_result.set_context(self.context)
+
+            # Set the position of the new Number instance to be the same as the
+            # position of the current Number instance.
+            comparison_result.set_pos(self.pos_start, other.pos_end)
+
+            # Return the new Number instance and None (no error occurred).
+            return comparison_result, None
+
+    def mul(self, other):
+        if isinstance(other, Number):
+            return (
+                Number(self.value * other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+
+    def div(self, other):
+        if isinstance(other, Number):
+            if other.value == 0:
+                return None, Lexer.IllegalOperationError(
+                    "Divide by zero", self.pos_start, other.pos_end, self.context
+                )
+            return (
+                Number(self.value / other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end),
+                None,
+            )
+
+    def mod(self, other):
+        if isinstance(other, Number):
+            if other.value == 0:
+                return None, Lexer.IllegalOperationError(
+                    "Modulo by zero", self.pos_start, other.pos_end, self.context
+                )
+            return (
+                Number(self.value % other.value)
+                .set_context(self.context)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end)
+            )
+        else:
+            print("the instance is not number", type(other))
+            return None
+
+    def pow(self, other):
+        if isinstance(other, Number):
+            return (
+                Number(self.value**other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end)
+            )
+        else:
+            print("the instance is not number", type(other))
+            return None
+
+    def floor_div(self, other):
+        if isinstance(other, Number):
+            if other.value == 0:
+                return None
+            return (
+                Number(self.value // other.value)
+                .set_context(self.context)
+                .set_pos(self.pos_start, other.pos_end)
+            )
+        else:
+            return None
+
+    def copy(self):
+        copy = Number(self.value)
+        copy.set_pos(self.pos_start, self.pos_end)
+        copy.set_context(self.context)
+        return copy
+
+    def __repr__(self) -> str:
+        return str(self.value)
+
+
+class Interpreter:
+    def __init__(self):
+        self.symbol_table = SymbolTable()
+
+    def visitNumberNode(self, node):
+        return node.value
+
+    def visitBinaryOperationNode(self, node):
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        if left is None or right is None:
+            return None
+        if node.operator.type == Lexer.TT_PLUS:
+            return left + right
+        elif node.operator.type == Lexer.TT_MINUS:
+            return left - right
+        elif node.operator.type == Lexer.TT_MUL:
+            return left * right
+        elif node.operator.type == Lexer.TT_DIV:
+            return left / right
+
+    def visit_TillNode(self, node):
+        res = InterpreterResult()
+        condition = res.register(self.visit(node.condition_expr))
+        if res.error:
+            return res
+        while condition.value != 0:  # Assuming 0 is false, any other value is true
+            for expr in node.body:
+                value = res.register(self.visit(expr))
+                if res.error:
+                    return res
+            condition = res.register(self.visit(node.condition_expr))
+        value = None
+        return res.success(value)
+
+    def visit(
+        self,
+        node,
+    ):
+        method_name = f"visit_{type(node).__name__}"
+        method = getattr(self, method_name, self.no_visit_method)
+        return method(node)
+
+    def no_visit_method(self, node):
+        raise Exception(f"No visit_{type(node).__name__} method defined")
+
+    def visit_NumberNode(
+        self,
+        node,
+    ):
+        return InterpreterResult().success(
+            Number(node.token.value).set_pos(node.pos_start, node.pos_end)
+        )
+
+    def visit_StatementsNode(
+        self,
+        node,
+    ):
+
+        value = None
+        for statement in node.statements:
+            value = self.visit(
+                statement,
+            )
+        return value
+
+    def visit_VariableNode(self, node: Pr.VariableNode):
+        var_name = node.variable_name
+        print(f"Visiting variable node: {node.value_node}")
+        value = self.visit(node.value_node)
+        if value is None:
+            return None
+        print(f"Setting variable '{var_name.value}' to {value}")
+        self.symbol_table.set(var_name.value, value)
+        return value
+
+    def visit_ShowNode(
+        self,
+        node,
+    ):
+        for statement in node.body:
+            # Directly print supported data types
+            if isinstance(statement, (int, str, bool, float)):
+                print(str(statement).strip(), end=" ")
+            elif isinstance(statement, Pr.VariableAccessNode):
+                # Retrieve variable value
+                value = self.symbol_table.get(statement.variable_name.value)
+                if value is None:  # Check for undefined variable
+                    print(
+                        f"Undefined variable: {statement.variable_name.value}", end=" "
+                    )
+                    continue
+
+                # Print list values
+                if isinstance(value, list):
+                    print(" ".join(map(str, value)), end=" ")
+                else:
+                    print("final output: ", end="")
+                    print(value.value, end=" ")
+            else:
+                # Visit the statement and handle result
+                result = self.visit(statement)
+                if result and result.value is not None:  # Avoid printing None
+                    if isinstance(result.value, bool):
+                        print(str(result.value).strip(), end=" ")
+                    else:
+                        print(result.value, end=" ")
+        print()  # Ensure newline after printing all statements
+        return None
+
+    def visit_VariableAccessNode(
+        self,
+        node,
+    ):
+        variable_name = node.variable_name.value
+        value = self.symbol_table.get(variable_name)
+
+        if not value:
+            return None
+        value = value
+        return value
+
+    def visit_BinaryOperationNode(self, node):
+        res = InterpreterResult()
+        left = res.register(
+            self.visit(
+                node.left,
+            )
+        )
+        if res.error:
+            return res
+        right = res.register(self.visit(node.right))
+        if res.error:
+            return res
+
+        result = None
+        error = None        if isinstance(left, Bool) or isinstance(right, Bool):
+            # Convert both operands to Bool if needed
+            if not isinstance(left, Bool):
+                left = Bool(bool(left.value if isinstance(left, Number) else left))
+            if not isinstance(right, Bool):
+                right = Bool(bool(right.value if isinstance(right, Number) else right))
+
+            if node.operator.type == Lexer.TT_EQUAL:
+                result, error = left.isEquall(right)
+            elif node.operator.type == Lexer.TT_NOT_EQUAL:
+                result, error = left.isNotEquall(right)
+            else:
+                return res.failure(
+                    Lexer.InvalidSyntaxError(
+                        f"Invalid operator '{node.operator.value}' for boolean values",
+                        node.operator.start,
+                        node.operator.end,
+                    )
+                )
+        else:
+            if not isinstance(left, Number):
+                left = Number(left)
+            if not isinstance(right, Number):
+                right = Number(right)            if node.operator.type == Lexer.TT_ADD:
+                result, error = left.add(right)
+            elif node.operator.type == Lexer.TT_MINUS:
+                result, error = left.minus(right)
+            elif node.operator.type == Lexer.TT_MUL:
+                result, error = left.mul(right)
+            elif node.operator.type == Lexer.TT_DIV:
+                result, error = left.div(right)
+            elif node.operator.type == Lexer.TT_LT:
+                result, error = left.isLT(right)
+            elif node.operator.type == Lexer.TT_POW:
+                result, error = left.pow(right)
+            elif node.operator.type == Lexer.TT_MOD:
+                result, error = left.mod(right)
+            elif node.operator.type == Lexer.TT_GT:
+                result, error = left.isGT(right)
+            elif node.operator.type == Lexer.TT_EQUAL:
+                result, error = left.isEquall(right)
+            elif node.operator.type == Lexer.TT_NOT_EQUAL:
+                result, error = left.isNotEquall(right)
+            else:
+                return res.failure(
+                    Lexer.InvalidSyntaxError(
+                        f"Invalid operator '{node.token.value}'",
+                        node.token.start,
+                        node.token.end,
+                    )
+                )
+
+        if error:
+            return res.failure(error)
+        else:
+            return res.success(result.set_pos(node.pos_start, node.pos_end))
+
+
+class SymbolTable:
+    def __init__(self):
+        self.symbols = {}
+
+    def get(self, name):
+        value = self.symbols.get(name)
+        if value == None:
+            return None
+        return value
+
+    def set(self, name, value):
+        print(f"Setting {name} to {value}")
+        if name in self.symbols:
+            raise Exception(f"Variable '{name}' already exists.")
+        self.symbols[name] = value
+
+    def remove(self, name):
+        del self.symbols[name]
+
+
+def run(filename):
+
+    interpreter = Interpreter()
+    symbol_table = SymbolTable()
+    ast, error = Pr.run(filename)
+    if ast is None:
+        return None, "Parser returned None"
+    if error is None:
+        result = interpreter.visit(ast)
+        return result, error
+    else:
+        return None, error
+
+
+result, error = run("simply.txt")
+if result is not None:
+    print("Result:", result.value)
+if error is not None:
+    print("Error:", error)

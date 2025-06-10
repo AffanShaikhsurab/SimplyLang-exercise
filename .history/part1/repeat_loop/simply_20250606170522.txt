@@ -1,0 +1,6 @@
+x is 2 .
+show(x) .
+
+till x < 3 do 
+    show(x)
+    

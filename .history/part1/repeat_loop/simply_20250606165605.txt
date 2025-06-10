@@ -1,0 +1,6 @@
+x is 2 .
+show(x) .
+
+repeat 5 times 
+ show (x)
+ 

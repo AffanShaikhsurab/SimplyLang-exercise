@@ -1,0 +1,4 @@
+bob does 
+    show("hello world")
+.
+bob

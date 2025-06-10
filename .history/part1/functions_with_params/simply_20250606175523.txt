@@ -1,0 +1,7 @@
+bob takes a does 
+    show("hello this is a function")
+    x is 10
+    show(x)
+    show(a)
+.
+bob(10)
