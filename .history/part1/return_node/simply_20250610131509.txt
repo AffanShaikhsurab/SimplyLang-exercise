@@ -1,7 +1,0 @@
-bob takes var does 
-    show("hello this is a function") 
-.
-
-sum is bob(10) .
-show(sum) .
-

@@ -1,5 +1,0 @@
-x is 2 .
-
-bob does 
-    show("hwllo world")
-.

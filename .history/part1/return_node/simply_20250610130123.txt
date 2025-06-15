@@ -1,8 +1,0 @@
-bob takes var does 
-    show("hello this is a function")   
-    show(var) 
-.
-
-bob(10) .
-
-
