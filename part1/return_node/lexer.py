@@ -37,7 +37,7 @@ KEYWORDS = {
     "times": TT_KEYWORD,
     "does": TT_KEYWORD,
     "repeat": TT_KEYWORD,
-    "return ": TT_KEYWORD,
+    "return": TT_KEYWORD,
     "do": TT_KEYWORD,
     "otherwise": TT_KEYWORD,
 }
